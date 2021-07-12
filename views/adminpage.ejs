@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Admin WorkArea</title>
+    <style media="screen">
+      label {
+        vertical-align:top;
+      }
+    </style>
+  </head>
+  <body>
+<div style="margin: 10px; text-align:left;padding: 10px 20px">
+  Total Number of Pending Posts: <%=posts.length%>
+  </div>
+<% for(var i=0;i<posts.length;i++){%>
+<div class="" style="border: 1px solid black; margin: 20px 10px;padding: 20px 20px;">
+<table>
+<tr>
+  <td>Heading</td>
+  <td><%=posts[i].heading%></td>
+</tr>
+<tr>
+  <td>Link:</td>
+  <td><a href="<%=posts[i].link%>">Click Here</a></td>
+</tr>
+<tr>
+  <td style="vertical-align:top;">Description:</td>
+  <td><%=posts[i].description%></td>
+</tr>
+</table>
+<form action="/admin/post" method="post">
+  <input type="text" name="pending_id" value="<%=posts[i]._id%>" hidden readonly>
+  <input type="text" name="id" value="<%=posts[i].main_id%>" hidden readonly>
+  <label for="all_categories">All categories</label>
+  <textarea name="all_categories" cols=55 rows=2 readonly><%=categories.join(", ")%></textarea><br>
+  <label for="old_categories">Old categories</label>
+  <textarea name="old_categories" cols=55 rows=2 readonly><%=posts[i].old_category.join(", ")%></textarea><br>
+  <textarea name="new_categories_already" hidden readonly><%=posts[i].new_category.filter(x=>categories.includes(x)).join(", ")%></textarea>
+  <label for="new_categories">New categories</label>
+  <textarea name="new_categories" cols=55 rows=2 ><%=posts[i].new_category.filter(x=>!categories.includes(x)).join(", ")%></textarea> <br>
+  <input type="password" name="access_code" placeholder="Enter Access Code" value="">
+  <button type="submit" name="button" style="margin-top:10px;">Submit</button>
+</form>
+
+
+</div>
+<%}%>
+  </body>
+</html>
