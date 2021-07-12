@@ -23,7 +23,7 @@ var corsOptions = {
     }
   }
 }
-//app.use(cors(corsOptions))
+app.use(cors(corsOptions))
 ///////Working With Database/////////
 mongoose.connect(process.env.DATABASE, {
     useNewUrlParser: true,
