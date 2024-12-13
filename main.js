@@ -26,10 +26,7 @@ var corsOptions = {
 // app.use(cors(corsOptions));
 
 // Working With Database (Updated)
-mongoose.connect(process.env.DATABASE, {
-  useFindAndModify: false,   // Optional: Disable `findAndModify()`
-  autoIndex: true,           // Optional: Automatically build indexes
-})
+mongoose.connect(process.env.DATABASE)
 .then(() => {
   console.log("Database connection successful");
 })
