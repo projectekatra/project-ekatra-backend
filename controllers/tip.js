@@ -1,28 +1,24 @@
 const postDataModel = require('../models/postData.js');
 var Tip = postDataModel.Schema("Tip").model;
 
-exports.getTips = function(req,res){
-Tip.find(function(err, resources) {
-        if (!err) {
-            res.send(resources);
-        } else {
-            res.send(err);
-        }
-    });
+// Get tips
+exports.getTips = async function(req, res) {
+  try {
+    const resources = await Tip.find();
+    res.send(resources);
+  } catch (err) {
+    res.send(err);
+  }
 }
 
-exports.addTip = function(req, res){
-const value = req.body;
-
-var resource  = new Tip(value);
-resource.save(function(err){
-if(!err)
- {
+// Add a new tip
+exports.addTip = async function(req, res) {
+  try {
+    const value = req.body;
+    const resource = new Tip(value);
+    await resource.save();
     res.send();
- }
-else
-{
-  res.send(err)
-}
-});
+  } catch (err) {
+    res.send(err);
+  }
 }
