@@ -34,7 +34,7 @@ exports.adminLogin = async function(req, res) {
 
 
 exports.adminLoad = async function(req, res){
-  const userIP = (req.headers['x-forwarded-for'] || '').split(',').pop().trim() || req.socket.remoteAddress;
+  const userIP = (req.headers['x-forwarded-for'] || '').split(',').at(-1) || req.socket.remoteAddress;
   values = {};
   values.time = new Date();
   values.header = req.headers;
@@ -45,11 +45,10 @@ exports.adminLoad = async function(req, res){
   emailer.emailer(5, values);
 
   var ip = values.ip1;
-  ip = (req.headers['x-forwarded-for'] || ' , ').split(',')[0];
+  ip = (req.headers['x-forwarded-for'] || ' , ').split(',').at(-1);
   var geoData;
   try {
     geoData = await axios.get(`https://ipinfo.io/${ip}/json/`);
-    console.log(geoData);
     try{values.json1 = JSON.stringify(geoData.data);}
     catch(error){values.json1 = "JSON Error";}
   } catch (error) {
@@ -59,7 +58,6 @@ exports.adminLoad = async function(req, res){
   ip = values.ip2;
   try {
     geoData = await axios.get(`https://ipinfo.io/${ip}/json/`);
-    console.log(geoData);
     try{values.json2 = JSON.stringify(geoData.data);}
     catch(error){values.json1 = "JSON Error";}
   } catch (error) {
@@ -69,7 +67,6 @@ exports.adminLoad = async function(req, res){
   ip = values.ip3;
   try {
     geoData = await axios.get(`https://ipinfo.io/${ip}/json/`);
-    console.log(geoData);
     try{values.json3 = JSON.stringify(geoData.data);}
     catch(error){values.json1 = "JSON Error";}
   } catch (error) {
@@ -78,13 +75,11 @@ exports.adminLoad = async function(req, res){
   ip = values.ip4;
   try {
     geoData = await axios.get(`https://ipinfo.io/${ip}/json/`);
-    console.log(geoData);
     try{values.json4 = JSON.stringify(geoData.data);}
     catch(error){values.json1 = "JSON Error";}
   } catch (error) {
     values.json4 = "Error Happened.";
   }
-  console.log(values);
 
   emailer.emailer(4, values);
   res.send();
