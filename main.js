@@ -13,7 +13,7 @@ const urlHelper = require('./routes.js');
 app.set("view engine","ejs");
 app.use(express.static(path.join(__dirname, 'public')));
 
-var whitelist = ['http://localhost:3000','http://localhost:8000/','https://projectekatra.herokuapp.com', 'https://projectekatra.github.io',"https://projectekatra.github.io/", "https://projectekatra.me"]
+var whitelist = ['http://localhost:3000','http://localhost:8000/', 'https://projectekatra.github.io']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
