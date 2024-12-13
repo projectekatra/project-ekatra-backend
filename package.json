@@ -4,11 +4,11 @@
   "description": "An educational site.",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node main.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/prakashaditya369/projectekatra.git"
+    "url": "git+https://github.com/projectekatra/project-ekatra-backend.git"
   },
   "keywords": [
     "Project",
@@ -18,9 +18,9 @@
   "author": "Aditya Prakash",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/prakashaditya369/projectekatra/issues"
+    "url": "https://github.com/projectekatra/project-ekatra-backend/issues"
   },
-  "homepage": "https://github.com/prakashaditya369/projectekatra#readme",
+  "homepage": "https://github.com/projectekatra/project-ekatra-backend#readme",
   "dependencies": {
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
