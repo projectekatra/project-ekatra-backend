@@ -28,6 +28,7 @@ var corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.set('trust proxy', true)
 
 // Working With Database (Updated)
 mongoose.connect(process.env.DATABASE)
