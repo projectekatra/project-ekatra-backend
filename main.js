@@ -25,10 +25,7 @@ var corsOptions = {
 }
 // app.use(cors(corsOptions))
 ///////Working With Database/////////
-mongoose.connect(process.env.DATABASE, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
+mongoose.connect(process.env.DATABASE);
 
 //////Handling Routes/////////
 urlHelper.setRequestUrl(app);
