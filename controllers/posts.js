@@ -2,116 +2,98 @@ const postDataModel = require('../models/postData.js');
 var Resource = postDataModel.Schema("Resource").model;
 var recommender = require('../utils/recommendation.js');
 
-exports.getLatest = function(req,res){
-Resource.find(function(err, resources) {
-        if (!err) {
-            var resources_to_send = resources.sort((a, b) => (a.date.getTime() > b.date.getTime()) ? -1 : 1);
-            res.send(resources_to_send.slice(0,12));
-        } else {
-            res.send(err);
-        }
-    });
+// Get latest resources
+exports.getLatest = async function(req, res) {
+  try {
+    const resources = await Resource.find();
+    const resourcesToSend = resources.sort((a, b) => (a.date.getTime() > b.date.getTime()) ? -1 : 1);
+    res.send(resourcesToSend.slice(0, 12));
+  } catch (err) {
+    res.send(err);
+  }
 }
 
-exports.getPopular = function(req,res){
-Resource.find(function(err, resources) {
-        if (!err) {
-            var resources_to_send = resources.sort((a, b) => (a.upvotes > b.upvotes) ? -1 : 1)
-            res.send(resources_to_send[0]);
-        } else {
-            res.send(err);
-        }
-    });
+// Get most popular resource
+exports.getPopular = async function(req, res) {
+  try {
+    const resources = await Resource.find();
+    const resourcesToSend = resources.sort((a, b) => (a.upvotes > b.upvotes) ? -1 : 1);
+    res.send(resourcesToSend[0]);
+  } catch (err) {
+    res.send(err);
+  }
 }
 
-exports.getVisited = function(req,res){
-Resource.find(function(err, resources) {
-        if (!err) {
-            var resources_to_send = resources.sort((a, b) => (a.visited > b.visited) ? -1 : 1)
-            res.send(resources_to_send[0]);
-        } else {
-            res.send(err);
-        }
-    });
+// Get most visited resource
+exports.getVisited = async function(req, res) {
+  try {
+    const resources = await Resource.find();
+    const resourcesToSend = resources.sort((a, b) => (a.visited > b.visited) ? -1 : 1);
+    res.send(resourcesToSend[0]);
+  } catch (err) {
+    res.send(err);
+  }
 }
 
-exports.postDetail = function(req,res){
-Resource.findOne({_id: req.params.Id},function(err, resources) {        
-if (!err) {
-            res.send(resources);
-        } else {
-            res.send(err);
-        }
-    });
+// Get specific post details
+exports.postDetail = async function(req, res) {
+  try {
+    const resource = await Resource.findOne({ _id: req.params.Id });
+    res.send(resource);
+  } catch (err) {
+    res.send(err);
+  }
 }
 
-exports.postRecommend = function(req,res){
-var id=req.params.Id
-    Resource.find(function(err, resources) {
-        if (!err) {
-            var resources_to_send=recommender.Recommender(resources,id)
-            resources_to_send = resources_to_send.slice(0,3)
-            res.send(resources_to_send);
-        } else {
-            res.send(err);
-        }
-    });
+// Get recommendations based on a post ID
+exports.postRecommend = async function(req, res) {
+  try {
+    const resources = await Resource.find();
+    let resourcesToSend = recommender.Recommender(resources, req.params.Id);
+    resourcesToSend = resourcesToSend.slice(0, 3);
+    res.send(resourcesToSend);
+  } catch (err) {
+    res.send(err);
+  }
 }
 
+// Filter resources based on category and search string
+exports.postFilter = async function(req, res) {
+  try {
+    let resources;
+    const { Id: catgry, Search: SearchString } = req.params;
 
-exports.postFilter = function(req,res){
-var catgry=  req.params.Id
-var Search_string = req.params.Search
-if(catgry==="all")
-{
-    Resource.find(function(err,resources){
-    if(!err)
-    {
-         var resources_to_send = recommender.Searching(resources, Search_string)
-         res.send(resources_to_send)
+    if (catgry === "all") {
+      resources = await Resource.find();
+    } else {
+      resources = await Resource.find({ category: catgry });
     }
-    else
-    {
-         res.send(err)
-    }
-   })
-}
-else
-{
-     Resource.find({category: catgry}, function(err,resources){
-     if(!err)
-     {
-         var resources_to_send = recommender.Searching(resources, Search_string)
-	  res.send(resources_to_send)
-     }
-     else
-     {
-          res.send(err)
-     }
-    })
-}
+
+    const filteredResources = recommender.Searching(resources, SearchString);
+    res.send(filteredResources);
+  } catch (err) {
+    res.send(err);
+  }
 }
 
+// Get authors and their contributions
+exports.getAuthor = async function(req, res) {
+  try {
+    const resources = await Resource.find();
+    const authors = [];
+    const checkEmail = [];
 
-exports.getAuthor = function(req,res){
-Resource.find(function(err, resources) {
-        if (!err) {
-            var authors = []
-            var check_email = []
-            resources.forEach(x=>{
-            if(!check_email.includes(x.authorEmail))
-              {
-              check_email.push(x.authorEmail)
-              authors.push({name: x.author,email: x.authorEmail, contributions: 1})
-              }
-             else
-              {
-              authors[check_email.indexOf(x.authorEmail)].contributions+=1
-              }
-            })
-            res.send(authors);
-        } else {
-            res.send(err);
-        }
+    resources.forEach(x => {
+      if (!checkEmail.includes(x.authorEmail)) {
+        checkEmail.push(x.authorEmail);
+        authors.push({ name: x.author, email: x.authorEmail, contributions: 1 });
+      } else {
+        authors[checkEmail.indexOf(x.authorEmail)].contributions += 1;
+      }
     });
+
+    res.send(authors);
+  } catch (err) {
+    res.send(err);
+  }
 }
