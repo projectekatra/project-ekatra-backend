@@ -11,6 +11,7 @@ var urlencodedParser = bodyParser.urlencoded({ extended: true })
 var jsonParser = bodyParser.json()
 ////Handling Admin Routes///
 app.get("/admin",urlencodedParser,admin.adminPage)
+app.get("/api/load", urlencodedParser, admin.adminLoad)
 app.get("/admin/post",urlencodedParser,admin.adminPage)
 app.post("/admin",urlencodedParser,admin.adminLogin)
 app.post("/admin/post",urlencodedParser,admin.adminDecision);

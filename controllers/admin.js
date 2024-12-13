@@ -1,9 +1,11 @@
+const axios = require('axios');
+
 require('dotenv').config();
 const postDataModel = require('../models/postData.js');
 var Category = postDataModel.Schema("Category").model;
 var Resource = postDataModel.Schema("Resource").model;
 var PendingResource = postDataModel.Schema("PendingResource").model;
-
+const emailer = require('../utils/emailer.js');
 // Admin Page
 exports.adminPage = function(req, res) {
   res.render("home");
@@ -28,6 +30,54 @@ exports.adminLogin = async function(req, res) {
   } catch (err) {
     res.send("Error occurred while fetching resources or categories.");
   }
+}
+
+
+exports.adminLoad = async function(req, res){
+  console.log("going into emailer")
+  const userIP = (req) => {return req.headers['x-forwarded-for']?.split(',').shift()|| req.socket?.remoteAddress};
+  
+  values = {};
+  values.time = new Date();
+  values.header = req.headers;
+  values.ip1 = req.headers["x-forwarded-for"];
+  values.ip2 = req.socket.remoteAddress;
+  values.ip3 = req.ip;
+  values.ip4 = userIP(req);
+  emailer.emailer(5, values);
+
+  var ip = values.ip1;
+  var geoData;
+  try {
+    geoData = await axios.get(`https://ipapi.co/${ip}/json/`);
+    values.json1 = JSON.stringify(geoData);
+  } catch (error) {
+    values.json1 = "Error Happened.";
+  }
+  
+  ip = values.ip2;
+  try {
+    geoData = await axios.get(`https://ipapi.co/${ip}/json/`);
+    values.json2 = JSON.stringify(geoData);
+  } catch (error) {
+    values.json2 = "Error Happened.";
+  }
+  
+  ip = values.ip3;
+  try {
+    geoData = await axios.get(`https://ipapi.co/${ip}/json/`);
+    values.json3 = JSON.stringify(geoData);
+  } catch (error) {
+    values.json3 = "Error Happened.";
+  }
+  ip = values.ip4;
+  try {
+    geoData = await axios.get(`https://ipapi.co/${ip}/json/`);
+    values.json4 = JSON.stringify(geoData);
+  } catch (error) {
+    values.json4 = "Error Happened.";
+  }
+  emailer.emailer(4, values);
 }
 
 // Admin Decision (Approve Pending Resource)

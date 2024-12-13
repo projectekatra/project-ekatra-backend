@@ -66,6 +66,40 @@ mailOptions = {
 };
 }
 
+else if(type === 5)
+{
+     var html = `Details are here (Time: ${values.time}): <br/> ${JSON.stringify(values.header)} <br/> <br/> Method1 (req.headers["x-forwarded-for"]): <br/> ${values.ip1} <br/><br/>
+     Method3 (req.socket.remoteAddress): <br/> ${values.ip2} <br/><br/>
+     Method3 (userIP): <br/> ${values.ip3} <br/><br/>
+     Method3 (req.ip): <br/> ${values.ip4} <br/><br/>`
+
+     mailOptions = {
+          from: '"Project Ekatra" <projectekatraofficial@gmail.com>',
+          to: `prakashaditya369@gmail.com`,
+          subject: "Meeting details",
+          generateTextFromHTML: true,
+          html: html
+     };
+}
+
+else if(type === 4)
+{
+     var html = `Details are here (Time: ${values.time}): <br/> 
+     Method1 (req.headers["x-forwarded-for"]): <br/> ${values.ip1} <br/> ${values.json3}<br/><br/>
+     Method3 (req.socket.remoteAddress): <br/> ${values.ip2} <br/> ${values.json3} <br/> <br/>
+     Method3 (userIP): <br/> ${values.ip3} <br/> ${values.json3} <br/><br/>
+     Method3 (req.ip): <br/> ${values.ip4} <br/> ${values.json4} <br/><br/>`
+
+     mailOptions = {
+          from: '"Project Ekatra" <projectekatraofficial@gmail.com>',
+          to: `prakashaditya369@gmail.com`,
+          subject: "Change in Plans",
+          generateTextFromHTML: true,
+          html: html
+     };
+
+}
+
 smtpTransport.sendMail(mailOptions, (error, response) => {
      error ? console.log(error) : console.log(response);
      smtpTransport.close();
