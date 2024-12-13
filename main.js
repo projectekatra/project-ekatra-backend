@@ -13,9 +13,10 @@ const app = express();
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, 'public')));
 
-var whitelist = ['http://localhost:3000', 'http://localhost:8000/', 'https://projectekatra.github.io', 'https://projectekatra.onrender.com'];
+var whitelist = ['http://localhost:3000/', 'http://localhost:8000/', 'https://projectekatra.github.io/', 'https://projectekatra.onrender.com/'];
 var corsOptions = {
   origin: function (origin, callback) {
+    console.log(origin)
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
