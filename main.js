@@ -13,7 +13,7 @@ const app = express();
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, 'public')));
 
-var whitelist = ['http://localhost:3000', 'http://localhost:8000/', 'https://projectekatra.github.io'];
+var whitelist = ['http://localhost:3000', 'http://localhost:8000/', 'https://projectekatra.github.io', 'https://projectekatra.onrender.com'];
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
@@ -23,7 +23,8 @@ var corsOptions = {
     }
   }
 };
-// app.use(cors(corsOptions));
+
+app.use(cors(corsOptions));
 
 // Working With Database (Updated)
 mongoose.connect(process.env.DATABASE)
