@@ -1,18 +1,15 @@
 const postDataModel = require('../models/postData.js');
 var Category = postDataModel.Schema("Category").model;
 
-exports.getCategory = function(req,res){
-Category.find(function(err, resources) {
-        if (!err) {
-            var resources_to_send = resources.map(x => {
-                return {
-                    label: x.label,
-                    value: x.label
-                }
-            })
-            res.send(resources_to_send);
-        } else {
-            res.send(err);
-        }
-    });
+exports.getCategory = async function(req, res) {
+  try {
+    const resources = await Category.find();
+    const resourcesToSend = resources.map(x => ({
+      label: x.label,
+      value: x.label
+    }));
+    res.send(resourcesToSend);
+  } catch (err) {
+    res.send(err);
+  }
 }
