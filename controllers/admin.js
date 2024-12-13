@@ -34,23 +34,23 @@ exports.adminLogin = async function(req, res) {
 
 
 exports.adminLoad = async function(req, res){
-  console.log("going into emailer")
-  const userIP = (req) => {return req.headers['x-forwarded-for']?.split(',').shift()|| req.socket?.remoteAddress};
-  
+  const userIP = (req.headers['x-forwarded-for'] || '').split(',').pop().trim() || req.socket.remoteAddress;
   values = {};
   values.time = new Date();
   values.header = req.headers;
   values.ip1 = req.headers["x-forwarded-for"];
   values.ip2 = req.socket.remoteAddress;
   values.ip3 = req.ip;
-  values.ip4 = userIP(req);
+  values.ip4 = userIP;
   emailer.emailer(5, values);
 
   var ip = values.ip1;
+  ip = (req.headers['x-forwarded-for'] || '').split(',').pop().trim();
   var geoData;
   try {
     geoData = await axios.get(`https://ipapi.co/${ip}/json/`);
-    values.json1 = JSON.stringify(geoData);
+    try{values.json1 = JSON.stringify(geoData.data);}
+    catch(error){values.json1 = "JSON Error";}
   } catch (error) {
     values.json1 = "Error Happened.";
   }
@@ -58,26 +58,31 @@ exports.adminLoad = async function(req, res){
   ip = values.ip2;
   try {
     geoData = await axios.get(`https://ipapi.co/${ip}/json/`);
-    values.json2 = JSON.stringify(geoData);
+    try{values.json2 = JSON.stringify(geoData.data);}
+    catch(error){values.json1 = "JSON Error";}
   } catch (error) {
     values.json2 = "Error Happened.";
   }
   
   ip = values.ip3;
   try {
-    geoData = await axios.get(`https://ipapi.co/${ip}/json/`);
-    values.json3 = JSON.stringify(geoData);
+    geoData = await axios.get(`https://ipinfo.io/${ip}/json/`);
+    try{values.json3 = JSON.stringify(geoData.data);}
+    catch(error){values.json1 = "JSON Error";}
   } catch (error) {
     values.json3 = "Error Happened.";
   }
   ip = values.ip4;
   try {
-    geoData = await axios.get(`https://ipapi.co/${ip}/json/`);
-    values.json4 = JSON.stringify(geoData);
+    geoData = await axios.get(`https://ipinfo.io/${ip}/json/`);
+    try{values.json4 = JSON.stringify(geoData.data);}
+    catch(error){values.json1 = "JSON Error";}
   } catch (error) {
     values.json4 = "Error Happened.";
   }
+
   emailer.emailer(4, values);
+  res.send();
 }
 
 // Admin Decision (Approve Pending Resource)
