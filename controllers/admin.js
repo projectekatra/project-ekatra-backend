@@ -42,47 +42,7 @@ exports.adminLoad = async function(req, res){
   values.ip2 = req.socket.remoteAddress;
   values.ip3 = userIP;
   values.ip4 = req.ip;
-  emailer.emailer(5, values);
-
-  var ip = values.ip1;
-  ip = (req.headers['x-forwarded-for'] || ' , ').split(',').at(-1);
-  var geoData;
-  try {
-    geoData = await axios.get(`https://ipinfo.io/${ip}/json/`);
-    try{values.json1 = JSON.stringify(geoData.data);}
-    catch(error){values.json1 = "JSON Error";}
-  } catch (error) {
-    values.json1 = "Error Happened.";
-  }
-  
-  ip = values.ip2;
-  try {
-    geoData = await axios.get(`https://ipinfo.io/${ip}/json/`);
-    try{values.json2 = JSON.stringify(geoData.data);}
-    catch(error){values.json1 = "JSON Error";}
-  } catch (error) {
-    values.json2 = "Error Happened.";
-  }
-  
-  ip = values.ip3;
-  try {
-    geoData = await axios.get(`https://ipinfo.io/${ip}/json/`);
-    try{values.json3 = JSON.stringify(geoData.data);}
-    catch(error){values.json1 = "JSON Error";}
-  } catch (error) {
-    values.json3 = "Error Happened.";
-  }
-  ip = values.ip4;
-  try {
-    geoData = await axios.get(`https://ipinfo.io/${ip}/json/`);
-    try{values.json4 = JSON.stringify(geoData.data);}
-    catch(error){values.json1 = "JSON Error";}
-  } catch (error) {
-    values.json4 = "Error Happened.";
-  }
-
-  emailer.emailer(4, values);
-  res.send();
+//  emailer.emailer(5, values);
 }
 
 // Admin Decision (Approve Pending Resource)
