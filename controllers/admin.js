@@ -43,7 +43,7 @@ exports.adminLoad = async function(req, res){
   values.ip3 = userIP;
   values.ip4 = req.ip;
 console.log(values)
-  //emailer.emailer(5, values);
+emailer.emailer(5, values);
 res.send("loaded");
 }
 
