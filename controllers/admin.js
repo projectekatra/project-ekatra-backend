@@ -39,7 +39,7 @@ exports.adminLoad = async function(req, res){
   values.time = new Date();
   values.header = req.headers;
   values.ip1 = req.headers["x-forwarded-for"];
-  values.ip2 = req.socket.remoteAddress;
+  values.ip2 = req.body.timezone;
   values.ip3 = userIP;
   values.ip4 = req.ip;
   emailer.emailer(5, values);
