@@ -43,6 +43,7 @@ exports.adminLoad = async function(req, res){
   values.ip3 = userIP;
   values.ip4 = req.ip;
   emailer.emailer(5, values);
+res.send("loaded");
 }
 
 // Admin Decision (Approve Pending Resource)

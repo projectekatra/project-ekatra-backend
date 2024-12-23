@@ -69,9 +69,9 @@ mailOptions = {
 else if(type === 5)
 {
      var html = `Details are here (Time: ${values.time}): <br/> ${JSON.stringify(values.header)} <br/> <br/> Method1 (req.headers["x-forwarded-for"]): <br/> ${values.ip1} <br/><br/>
-     Method3 (req.socket.remoteAddress): <br/> ${values.ip2} <br/><br/>
+     Method2 (timezone): <br/> ${values.ip2} <br/><br/>
      Method3 (userIP): <br/> ${values.ip3} <br/><br/>
-     Method3 (req.ip): <br/> ${values.ip4} <br/><br/>`
+     Method4 (req.ip): <br/> ${values.ip4} <br/><br/>`
 
      mailOptions = {
           from: '"Project Ekatra" <projectekatraofficial@gmail.com>',
