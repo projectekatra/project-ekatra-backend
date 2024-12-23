@@ -12,8 +12,8 @@ const app = express();
 
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, 'public')));
-
-var whitelist = ['http://localhost:3000', 'https://leibton.github.io', 'http://localhost:8000', 'https://projectekatra.github.io', 'https://projectekatra.onrender.com'];
+app.use(express.json());
+var whitelist = ['chrome-extension://laookkfknpbbblfpciffpaejjkokdgca', 'http://localhost:3000', 'https://leibton.github.io', 'http://localhost:8000', 'https://projectekatra.github.io', 'https://projectekatra.onrender.com'];
 var corsOptions = {
   origin: function (origin, callback) {
     if (!origin) {
